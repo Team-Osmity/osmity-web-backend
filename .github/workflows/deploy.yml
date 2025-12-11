@@ -16,6 +16,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # ---------------------------
+      # Detect Branch → TAG / DEPLOY_DIR
+      # ---------------------------
       - name: Set deployment variables
         run: |
           if [ "${GITHUB_REF##*/}" = "prod" ]; then
@@ -26,20 +29,32 @@ jobs:
             echo "DEPLOY_DIR=dev" >> $GITHUB_ENV
           fi
 
+      # ---------------------------
+      # Docker Hub Login
+      # ---------------------------
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # ---------------------------
+      # Build Docker Image
+      # ---------------------------
       - name: Build Docker image
         run: |
           docker build -t $REGISTRY/$IMAGE_NAME:${TAG} .
 
+      # ---------------------------
+      # Push Docker Image
+      # ---------------------------
       - name: Push Docker image
         run: |
           docker push $REGISTRY/$IMAGE_NAME:${TAG}
 
+      # ---------------------------
+      # Deploy on the Server
+      # ---------------------------
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -47,7 +62,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/Osmity/${DEPLOY_DIR}
+            cd ~/Osmity/${{ env.DEPLOY_DIR }}
             docker compose pull
             docker compose up -d
             docker system prune -f
