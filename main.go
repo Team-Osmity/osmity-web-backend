@@ -3,6 +3,7 @@ package main
 import (
     "log"
     "net/http"
+    "os"
 
     "github.com/gorilla/mux"
 
@@ -10,7 +11,7 @@ import (
     _ "osmity-web-backend/docs"
     httpSwagger "github.com/swaggo/http-swagger"
 
-    // ハンドラ層（後で作成）
+    // ハンドラ層
     "osmity-web-backend/handler"
 )
 
@@ -20,30 +21,29 @@ import (
 // @host localhost:8080
 // @BasePath /api
 func main() {
+
+    // -----------------------------
+    // PORT の読み込み
+    // -----------------------------
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080" // デフォルト
+    }
+
     r := mux.NewRouter()
 
-    // -----------------------------
     // Swagger UI
-    // -----------------------------
     r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
-    // -----------------------------
-    // API ルート
-    // -----------------------------
+    // API root
     api := r.PathPrefix("/api").Subrouter()
 
-    // Simple API example
     api.HandleFunc("/hello", handler.HelloHandler).Methods("GET")
-
-    // Blog API base（後で実装）
     api.HandleFunc("/blogs", handler.GetBlogsHandler).Methods("GET")
     api.HandleFunc("/blogs", handler.CreateBlogHandler).Methods("POST")
 
-    // -----------------------------
-    // HTTP サーバー起動
-    // -----------------------------
-    log.Println("Starting server on :8080...")
-    if err := http.ListenAndServe(":8080", r); err != nil {
+    log.Printf("Starting server on :%s...\n", port)
+    if err := http.ListenAndServe(":"+port, r); err != nil {
         log.Fatal(err)
     }
 }
