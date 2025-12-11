@@ -1,0 +1,62 @@
+basePath: /api
+definitions:
+  handler.Blog:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API for osmity.com and shizuku86.com services
+  title: Osmity Backend API
+  version: "1.0"
+paths:
+  /blogs:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handler.Blog'
+            type: array
+      summary: Get all blogs
+      tags:
+      - Blog
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Blog data
+        in: body
+        name: blog
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Blog'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Blog'
+      summary: Create a new blog
+      tags:
+      - Blog
+  /hello:
+    get:
+      description: Returns hello message
+      responses:
+        "200":
+          description: hello message
+          schema:
+            type: string
+      summary: Hello world API
+      tags:
+      - Example
+swagger: "2.0"
