@@ -25,8 +25,7 @@ jobs:
           script: |
             cd ~/Osmity/prod
             echo "APP_VERSION=${APP_VERSION}" > .env
-            echo "Deploying version:"
-            cat .env
+            echo "Deploying version: ${APP_VERSION}"
             docker compose pull
             docker compose up -d
             docker system prune -f
