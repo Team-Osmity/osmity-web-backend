@@ -12,5 +12,5 @@ import (
 // @Success 200 {string} string "hello message"
 // @Router /hello [get]
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hello from Osmity backend API!")
+    fmt.Fprintf(w, "Hello from Osmity backend API! Updated!")
 }
