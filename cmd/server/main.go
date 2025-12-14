@@ -5,13 +5,6 @@ import (
     "osmity-web-backend/internal/router"
 )
 
-var (
-    AppEnv    = "unknown"
-    Version   = "unknown"
-    BuildTime = "unknown"
-    GitCommit = "unknown"
-)
-
 func main() {
     r := gin.Default()
     router.Register(r)

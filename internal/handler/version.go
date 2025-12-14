@@ -1,6 +1,9 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+    "github.com/gin-gonic/gin"
+    "osmity-web-backend/internal/buildinfo"
+)
 
 // Version godoc
 // @Summary     Get backend version
@@ -12,9 +15,9 @@ import "github.com/gin-gonic/gin"
 func Version(c *gin.Context) {
     c.JSON(200, VersionResponse{
         Service:   "backend",
-        Env:       AppEnv,
-        Version:   Version,
-        Commit:    GitCommit,
-        BuildTime: BuildTime,
+        Env:       buildinfo.AppEnv,
+        Version:   buildinfo.Version,
+        Commit:    buildinfo.GitCommit,
+        BuildTime: buildinfo.BuildTime,
     })
 }
