@@ -11,21 +11,21 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Deploy tagged version
         uses: appleboy/ssh-action@v1.0.3
+        envs: APP_VERSION
+        env:
+          APP_VERSION: ${{ github.ref_name }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/Osmity/prod
-          
-            echo "APP_VERSION=${GITHUB_REF_NAME}" > .env
+            echo "APP_VERSION=${APP_VERSION}" > .env
             echo "Deploying version:"
             cat .env
-          
             docker compose pull
             docker compose up -d
             docker system prune -f
