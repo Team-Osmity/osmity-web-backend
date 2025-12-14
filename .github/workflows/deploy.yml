@@ -1,12 +1,14 @@
-name: Deploy Backend
+name: Deploy Backend (dev)
 
 on:
   push:
-    branches: ["main", "prod"]
+    branches: ["main"]
 
 env:
   REGISTRY: docker.io
   IMAGE_NAME: osmity/osmity-web-backend
+  TAG: dev
+  DEPLOY_DIR: dev
 
 jobs:
   build-and-deploy:
@@ -16,45 +18,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # ---------------------------
-      # Detect Branch → TAG / DEPLOY_DIR
-      # ---------------------------
-      - name: Set deployment variables
-        run: |
-          if [ "${GITHUB_REF##*/}" = "prod" ]; then
-            echo "TAG=prod" >> $GITHUB_ENV
-            echo "DEPLOY_DIR=prod" >> $GITHUB_ENV
-          else
-            echo "TAG=dev" >> $GITHUB_ENV
-            echo "DEPLOY_DIR=dev" >> $GITHUB_ENV
-          fi
-
-      # ---------------------------
-      # Docker Hub Login
-      # ---------------------------
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # ---------------------------
-      # Build Docker Image
-      # ---------------------------
       - name: Build Docker image
         run: |
-          docker build -t $REGISTRY/$IMAGE_NAME:${TAG} .
+          docker build \
+            -t $REGISTRY/$IMAGE_NAME:$TAG .
 
-      # ---------------------------
-      # Push Docker Image
-      # ---------------------------
       - name: Push Docker image
         run: |
-          docker push $REGISTRY/$IMAGE_NAME:${TAG}
+          docker push $REGISTRY/$IMAGE_NAME:$TAG
 
-      # ---------------------------
-      # Deploy on the Server
-      # ---------------------------
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -62,8 +40,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/Osmity/${{ env.DEPLOY_DIR }}
+            cd ~/Osmity/dev
             docker compose pull
-            docker compose down
             docker compose up -d --force-recreate
-            docker system prune -f
