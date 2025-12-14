@@ -21,8 +21,11 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/Osmity/prod
-            export APP_VERSION=${GITHUB_REF_NAME}
-            echo "Deploying version: $APP_VERSION"
+          
+            echo "APP_VERSION=${GITHUB_REF_NAME}" > .env
+            echo "Deploying version:"
+            cat .env
+          
             docker compose pull
             docker compose up -d
             docker system prune -f
