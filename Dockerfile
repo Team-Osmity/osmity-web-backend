@@ -18,12 +18,10 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     -X 'main.Version=${APP_VERSION}' \
     -X 'main.BuildTime=${BUILD_TIME}' \
     -X 'main.GitCommit=${GIT_COMMIT}'" \
-  -o server .
+  -o server ./cmd/server
 
 FROM alpine:latest
 WORKDIR /app
-
-ENV APP_ENV=${APP_ENV}
 
 COPY --from=builder /app/server .
 

@@ -1,62 +1,48 @@
-basePath: /api
 definitions:
-  handler.Blog:
+  handler.HealthResponse:
     properties:
-      content:
-        type: string
-      id:
-        type: integer
-      title:
+      status:
         type: string
     type: object
-host: localhost:8080
+  handler.VersionResponse:
+    properties:
+      buildTime:
+        type: string
+      commit:
+        type: string
+      env:
+        type: string
+      service:
+        type: string
+      version:
+        type: string
+    type: object
 info:
   contact: {}
-  description: API for osmity.com and shizuku86.com services
-  title: Osmity Backend API
-  version: "1.0"
 paths:
-  /blogs:
+  /api/health:
     get:
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/handler.Blog'
-            type: array
-      summary: Get all blogs
-      tags:
-      - Blog
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: Blog data
-        in: body
-        name: blog
-        required: true
-        schema:
-          $ref: '#/definitions/handler.Blog'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.Blog'
-      summary: Create a new blog
+            $ref: '#/definitions/handler.HealthResponse'
+      summary: Health check
       tags:
-      - Blog
-  /hello:
+      - system
+  /api/version:
     get:
-      description: Returns hello message
+      description: Returns backend build information
+      produces:
+      - application/json
       responses:
         "200":
-          description: hello message
+          description: OK
           schema:
-            type: string
-      summary: Hello world API
+            $ref: '#/definitions/handler.VersionResponse'
+      summary: Get backend version
       tags:
-      - Example
+      - system
 swagger: "2.0"
