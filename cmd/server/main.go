@@ -12,14 +12,13 @@ import (
 
 func main() {
     r := gin.Default()
-
-    // /swagger → /swagger/index.html
-    r.GET("/swagger/", func(c *gin.Context) {
+	r.RedirectTrailingSlash = true
+	
+	r.GET("/swagger", func(c *gin.Context) {
 	    c.Redirect(302, "/swagger/index.html")
 	})
-
-    // Swagger UI
-    r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
     router.Register(r)
 
