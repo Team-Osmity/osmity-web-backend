@@ -14,10 +14,10 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
   go build \
   -ldflags "\
-    -X 'main.AppEnv=${APP_ENV}' \
-    -X 'main.Version=${APP_VERSION}' \
-    -X 'main.BuildTime=${BUILD_TIME}' \
-    -X 'main.GitCommit=${GIT_COMMIT}'" \
+    -X 'osmity-web-backend/internal/buildinfo.AppEnv=${APP_ENV}' \
+    -X 'osmity-web-backend/internal/buildinfo.Version=${APP_VERSION}' \
+    -X 'osmity-web-backend/internal/buildinfo.BuildTime=${BUILD_TIME}' \
+    -X 'osmity-web-backend/internal/buildinfo.GitCommit=${GIT_COMMIT}'" \
   -o server ./cmd/server
 
 FROM alpine:latest
