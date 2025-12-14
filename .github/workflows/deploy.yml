@@ -1,4 +1,4 @@
-name: Deploy Backend
+name: Deploy Backend (dev/prod)
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set deployment variables
+      - name: Set variables
         run: |
           if [ "${GITHUB_REF##*/}" = "prod" ]; then
             echo "TAG=prod" >> $GITHUB_ENV
@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/Osmity/${DEPLOY_DIR}
+            cd ~/Osmity/${{ env.DEPLOY_DIR }}
             docker compose pull
-            docker compose up -d
+            docker compose up -d --force-recreate
             docker system prune -f
