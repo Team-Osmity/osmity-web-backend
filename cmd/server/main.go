@@ -12,7 +12,16 @@ import (
 
 func main() {
     r := gin.Default()
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+    // /swagger → /swagger/index.html
+    r.GET("/swagger", func(c *gin.Context) {
+        c.Redirect(302, "/swagger/index.html")
+    })
+
+    // Swagger UI
+    r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
     router.Register(r)
+
     r.Run(":8080")
 }
