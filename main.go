@@ -13,27 +13,27 @@ import (
     "osmity-web-backend/handler"
 )
 
-func main() {
-    // -----------------------------
-    // APP_ENV 読み込み
-    // -----------------------------
-    appEnv := os.Getenv("APP_ENV")
-    if appEnv == "" {
-        appEnv = "unknown"
-    }
+var (
+    AppEnv    = "unknown"
+    Version   = "unknown"
+    BuildTime = "unknown"
+    GitCommit = "unknown"
+)
 
+
+func main() {
     port := os.Getenv("PORT")
     if port == "" {
         port = "8080"
     }
 
-    log.Printf("Starting backend | APP_ENV=%s | PORT=%s", appEnv, port)
+    log.Printf("Starting backend | APP_ENV=%s | PORT=%s", AppEnv, port)
 
     r := mux.NewRouter()
 
     
     // Swagger は dev のみ
-    if appEnv == "dev" {
+    if AppEnv == "dev" {
         r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
     }
 

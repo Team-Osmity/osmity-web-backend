@@ -1,76 +1,43 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "API for osmity.com and shizuku86.com services",
-        "title": "Osmity Backend API",
-        "contact": {},
-        "version": "1.0"
+        "contact": {}
     },
-    "host": "localhost:8080",
-    "basePath": "/api",
     "paths": {
-        "/blogs": {
+        "/api/health": {
             "get": {
-                "tags": [
-                    "Blog"
-                ],
-                "summary": "Get all blogs",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/handler.Blog"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Blog"
+                    "system"
                 ],
-                "summary": "Create a new blog",
-                "parameters": [
-                    {
-                        "description": "Blog data",
-                        "name": "blog",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handler.Blog"
-                        }
-                    }
-                ],
+                "summary": "Health check",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.Blog"
+                            "$ref": "#/definitions/handler.HealthResponse"
                         }
                     }
                 }
             }
         },
-        "/hello": {
+        "/api/version": {
             "get": {
-                "description": "Returns hello message",
-                "tags": [
-                    "Example"
+                "description": "Returns backend build information",
+                "produces": [
+                    "application/json"
                 ],
-                "summary": "Hello world API",
+                "tags": [
+                    "system"
+                ],
+                "summary": "Get backend version",
                 "responses": {
                     "200": {
-                        "description": "hello message",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handler.VersionResponse"
                         }
                     }
                 }
@@ -78,16 +45,30 @@
         }
     },
     "definitions": {
-        "handler.Blog": {
+        "handler.HealthResponse": {
             "type": "object",
             "properties": {
-                "content": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.VersionResponse": {
+            "type": "object",
+            "properties": {
+                "buildTime": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
+                "commit": {
+                    "type": "string"
                 },
-                "title": {
+                "env": {
+                    "type": "string"
+                },
+                "service": {
+                    "type": "string"
+                },
+                "version": {
                     "type": "string"
                 }
             }
