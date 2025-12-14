@@ -31,6 +31,7 @@ func main() {
 
     r := mux.NewRouter()
 
+    
     // Swagger は dev のみ
     if appEnv == "dev" {
         r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
