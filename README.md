@@ -4,21 +4,20 @@ The backend is implemented in Go and is deployed as a Docker container, with
 separate configurations for development and production environments.
 
 ## Overview
-
 - Language: Go
 - Purpose:
   - Provide RESTful APIs
   - Serve Swagger (OpenAPI) documentation in development
 - The backend is designed to be consumed by a Next.js frontend via `/api/*`.
-- 
+
 ## Environments
 ### Development (dev)
 - Domains  
   - https://dev.osmity.com  
   - https://dev.shizuku86.com
 
-- API Base: `https://dev.osmity.com/api/*`
-- Swagger: `https://dev.osmity.com/swagger/index.html`
+- API Base: https://dev.osmity.com/api/*
+- Swagger: https://dev.osmity.com/swagger/index.html
   > Swagger is **only available in the development environment**.
 
 ### Production (prod)
@@ -26,7 +25,7 @@ separate configurations for development and production environments.
 - https://osmity.com  
 - https://shizuku86.com
 
-- API Base: `https://osmity.com/api/*`
+- API Base: https://osmity.com/api/*
 - Swagger: Disabled / not publicly accessible in production
 
 ## Running Locally / Development
