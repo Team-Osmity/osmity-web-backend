@@ -3,9 +3,9 @@ FROM golang:1.24-alpine
 WORKDIR /app
 
 ARG APP_ENV
-ARG APP_VERSION
-ARG BUILD_TIME
-ARG GIT_COMMIT
+ARG BACK_VERSION
+ARG BACK_BUILD_TIME
+ARG BACK_COMMIT_SHA
 
 # go env / module cache を活かす
 COPY go.mod go.sum ./
