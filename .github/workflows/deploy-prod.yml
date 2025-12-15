@@ -5,27 +5,24 @@ on:
     tags:
       - 'v*.*.*'
 
-env:
-  IMAGE_NAME: osmity/osmity-web-backend
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy tagged version
+      - name: Deploy tagged backend
         uses: appleboy/ssh-action@v1.0.3
         env:
-          APP_VERSION: ${{ github.ref_name }}
+          BACK_VERSION: ${{ github.ref_name }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          envs: APP_VERSION
+          envs: BACK_VERSION
           script: |
             cd ~/Osmity/prod
-            echo "APP_VERSION=${APP_VERSION}" > .env
-            echo "Deploying version: ${APP_VERSION}"
-            docker compose pull
-            docker compose up -d
+            echo "BACK_VERSION=${BACK_VERSION}" > .env
+            echo "Deploying backend version: ${BACK_VERSION}"
+            docker compose pull backend
+            docker compose up -d backend
             docker system prune -f
