@@ -17,7 +17,7 @@ func Version(c *gin.Context) {
         Service:   "backend",
         Env:       buildinfo.AppEnv,
         Version:   buildinfo.Version,
-        Commit:    buildinfo.GitCommit,
+        Commit:    buildinfo.CommitSHA,
         BuildTime: buildinfo.BuildTime,
     })
 }
