@@ -17,7 +17,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     -X 'osmity-web-backend/internal/buildinfo.AppEnvLd=${APP_ENV}' \
     -X 'osmity-web-backend/internal/buildinfo.VersionLd=${APP_VERSION}' \
     -X 'osmity-web-backend/internal/buildinfo.BuildTimeLd=${BUILD_TIME}' \
-    -X 'osmity-web-backend/internal/buildinfo.GitCommitLd=${GIT_COMMIT}'" \
+    -X 'osmity-web-backend/internal/buildinfo.CommitSHALd=${GIT_COMMIT}'" \
   -o server ./cmd/server
 
 FROM alpine:latest
