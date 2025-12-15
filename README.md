@@ -40,7 +40,7 @@ Osmity/
 Run Docker Compose **from the project root directory** (one level above `back`):
 ```
 cd Osmity
-docker compose up -d
+docker compose up -d --build
 ```
 
 After startup, the services are available at:
