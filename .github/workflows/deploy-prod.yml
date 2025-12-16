@@ -21,8 +21,14 @@ jobs:
           envs: BACK_VERSION
           script: |
             cd ~/Osmity/prod
-            echo "BACK_VERSION=${BACK_VERSION}" > .env
+            echo "BACK_VERSION=${BACK_VERSION}" > .env.back
             echo "Deploying backend version: ${BACK_VERSION}"
+
+            set -a
+            source .env.back
+            source .env.front
+            set +a
+
             docker compose pull backend
             docker compose up -d backend
             docker system prune -f
