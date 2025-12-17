@@ -1,7 +1,9 @@
 package main
 
 import (
-	"osmity-web-backend/internal/buildinfo"
+	"log"
+	"os"
+	"osmity-web-backend/internal/db"
 	"osmity-web-backend/internal/router"
 
 	"github.com/gin-gonic/gin"
@@ -13,10 +15,19 @@ import (
 )
 
 func main() {
+    db, err := db.Connect()
+    if err != nil {
+		log.Fatalf("failed to connect database: %v", err)
+	}
+    
     r := gin.Default()
-    if buildinfo.AppEnv == "dev" {
+
+    appEnv := os.Getenv("APP_ENV")
+    if appEnv == "dev" {
         r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
     }
     router.Register(r)
+
+    _ = db
     r.Run(":8080")
 }
