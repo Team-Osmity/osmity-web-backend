@@ -3,6 +3,7 @@ package main
 import (
     "github.com/gin-gonic/gin"
     "osmity-web-backend/internal/router"
+    "osmity-web-backend/internal/buildinfo"
 
 	swaggerFiles "github.com/swaggo/files"
     ginSwagger "github.com/swaggo/gin-swagger"
@@ -12,7 +13,9 @@ import (
 
 func main() {
     r := gin.Default()
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+    if buildinfo.AppEnv == "dev" {
+        r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+    }
     router.Register(r)
     r.Run(":8080")
 }
