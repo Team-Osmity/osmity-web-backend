@@ -1,14 +1,15 @@
 package main
 
 import (
-    "github.com/gin-gonic/gin"
-    "osmity-web-backend/internal/router"
-    "osmity-web-backend/internal/buildinfo"
+	"osmity-web-backend/internal/buildinfo"
+	"osmity-web-backend/internal/router"
+
+	"github.com/gin-gonic/gin"
 
 	swaggerFiles "github.com/swaggo/files"
-    ginSwagger "github.com/swaggo/gin-swagger"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
-    _ "osmity-web-backend/docs"
+	_ "osmity-web-backend/docs"
 )
 
 func main() {
