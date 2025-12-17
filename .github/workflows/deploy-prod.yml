@@ -29,6 +29,13 @@ jobs:
             source .env.front
             set +a
 
+            docker pull osmity/osmity-backend-migrate:${BACK_VERSION}
+            docker run --rm \
+              --network container:osmity-postgres-prod \
+              osmity/osmity-backend-migrate:${BACK_VERSION} \
+              -path /migrations \
+              -database "postgres://osmity:osmity_prod_password@localhost:5432/osmity_prod?sslmode=disable" up
+
             docker compose pull backend
             docker compose up -d backend
             docker system prune -f
